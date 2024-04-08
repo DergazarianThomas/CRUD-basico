@@ -11,6 +11,7 @@ namespace Entidades
         #region Atributos
 
         private int id;
+        private int codigo;
         private string nombre;
         private string unidad;
         private int precio;
@@ -52,6 +53,12 @@ namespace Entidades
         {
             get { return id; }
             set { id = value; }
+        }
+
+        public int Codigo 
+        { 
+            get { return codigo; } 
+            set { codigo = value; } 
         }
 
         public string Nombre
