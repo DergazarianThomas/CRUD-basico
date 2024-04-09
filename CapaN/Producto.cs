@@ -8,14 +8,14 @@ namespace Entidades
 {
     public class Producto
     {
+
         #region Atributos
 
-        private int id;
+        private int id_prod;
         private int codigo;
         private string nombre;
         private string unidad;
         private int precio;
-        private DateTime admitido;
 
         #endregion
 
@@ -24,21 +24,21 @@ namespace Entidades
         public Producto()
         { }
 
-        public Producto(int Id, string Nombre, string Unidad, int Precio, DateTime Admitido) 
+        public Producto(int Id_prod, int Codigo, string Nombre, string Unidad, int Precio) 
         { 
-          this.id = Id;
+            this.id_prod = Id_prod;
+            this.codigo = Codigo;
             this.nombre = Nombre;
             this.unidad = Unidad;
             this.precio = Precio;
-            this.admitido = Admitido;
         }
 
-        public Producto(string Nombre, string Unidad, int Precio, DateTime Admitido)
+        public Producto(string Nombre, int Codigo, string Unidad, int Precio)
         {
+            this.codigo = Codigo;
             this.nombre = Nombre;
             this.unidad = Unidad;
             this.precio = Precio;
-            this.admitido = Admitido;
         }
         #endregion
 
@@ -49,16 +49,17 @@ namespace Entidades
         }
         #endregion
 
-        public int Id
+        #region GetSet
+        public int Id_prod
         {
-            get { return id; }
-            set { id = value; }
+            get { return id_prod; }
+            set { id_prod = value; }
         }
 
-        public int Codigo 
-        { 
-            get { return codigo; } 
-            set { codigo = value; } 
+        public int Codigo
+        {
+            get { return codigo; }
+            set { codigo = value; }
         }
 
         public string Nombre
@@ -78,12 +79,7 @@ namespace Entidades
             get { return precio; }
             set { precio = value; }
         }
-
-        public DateTime Admitido
-        {
-            get { return admitido; }
-            set { admitido = value; }
-        }
+        #endregion
 
     }
 }

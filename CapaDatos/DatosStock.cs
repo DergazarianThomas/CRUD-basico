@@ -1,35 +1,36 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
-using Entidades;
 using CapaDatos;
+using CapaN;
 
 namespace CapaDatos
 {
-    public class DatosProductos : DatosConexionBD
+    public class DatosStock : DatosConexionBD
     {
 
-        public int abmProductos(string accion, Producto objProducto)
+        public int abmStock(string accion, Stock objStock)
         {
             int resultado = -1;
             string orden = string.Empty;
 
-            if (accion == "Alta") 
+            if (accion == "Alta")
             {
-                orden = $"insert into productos (Codigo, Nombre, Unidad, Precio) values ({objProducto.Codigo}, '{objProducto.Nombre}', '{objProducto.Unidad} ',{objProducto.Precio});";
+                orden = $"insert into stock (Cantidad, Admitido, Prod_cod) values ({objStock.Cantidad}, '{objStock.Admitido}', {objStock.Prod_cod});";
             }
 
             if (accion == "Modificar")
             {
-                orden = $"update productos set Nombre='{objProducto.Nombre}', Unidad=' {objProducto.Unidad}', Precio=' {objProducto.Precio}' WHERE Codigo Like '%{objProducto.Codigo}%';";
+                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= {objStock.Admitido} WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
             }
 
             if (accion == "Borrar")
-                orden = "delete * from productos where Codigo =" + objProducto.Codigo + ";";
+                orden = "delete * from stock where Prod_cod =" + objStock.Prod_cod + ";";
             // falta la orden de borrar 
 
             SqlCommand cmd = new SqlCommand(orden, conexion);
@@ -41,7 +42,7 @@ namespace CapaDatos
             }
             catch (Exception e)
             {
-                throw new Exception("Errror al tratar de guardar,borrar o modificar tabla de productos",e); 
+                throw new Exception("Errror al tratar de guardar,borrar o modificar tabla de stock", e);
 
 
             }
@@ -53,13 +54,13 @@ namespace CapaDatos
             return resultado;
         }
 
-        public DataSet listadoProductos(string cual)
+        public DataSet listadoStocks(string cual)
         {
             string orden = string.Empty;
             if (cual != "Todos")
-                orden = "select * from productos where Id_prod = " + int.Parse(cual) + ";";
+                orden = "select * from stock where Id_stock = " + int.Parse(cual) + ";";
             else
-                orden = "select * from productos;";
+                orden = "select * from stock;";
             SqlCommand cmd = new SqlCommand(orden, conexion);
             DataSet ds = new DataSet();
             SqlDataAdapter da = new SqlDataAdapter();
@@ -72,7 +73,7 @@ namespace CapaDatos
             }
             catch (Exception e)
             {
-                throw new Exception("Error al listar Productos", e);
+                throw new Exception("Error al listar Stocks", e);
             }
             finally
             {
@@ -81,8 +82,6 @@ namespace CapaDatos
             }
             return ds;
         }
+
     }
 }
-
-    
-

@@ -11,7 +11,7 @@ namespace CapaDatos
     public class DatosConexionBD
     {
         public SqlConnection conexion;
-        public string cadenaConexion = @"Data Source=EQUIPO\SQLEXPRESS;Initial Catalog=tienda;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        public string cadenaConexion = @"Data Source=DESKTOP-6OKB920\SQLEXPRESS;Initial Catalog=tienda;Integrated Security=True";
 
         #region constructor
 
