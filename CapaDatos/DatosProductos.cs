@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Entidades;
 using CapaDatos;
+using System.Data.OleDb;
+using CapaN;
 
 namespace CapaDatos
 {
@@ -80,6 +82,36 @@ namespace CapaDatos
                 cmd.Dispose();
             }
             return ds;
+        }
+
+        public List<Producto> ObtenerProductos()
+        {
+            List<Producto> lista = new List<Producto>();
+            string orden = "Select Id_prod, Nombre From productos";
+            SqlCommand cmd = new SqlCommand(orden, conexion);
+            SqlDataReader dr;
+            try
+            {
+                Abrirconexion();
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Producto O = new Producto();
+                    O.Id_prod = dr.GetInt32(0);
+                    O.Nombre = dr.GetString(1);
+                    lista.Add(O);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al listar Productos", e);
+            }
+            finally
+            {
+                Cerrarconexion();
+                cmd.Dispose();
+            }
+            return lista;
         }
     }
 }

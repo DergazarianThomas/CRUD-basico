@@ -23,5 +23,12 @@ namespace CapaNegocio
             return objDatosProductos.listadoProductos(cual);
         }
 
+        public List<Producto> ObtenerProductos()
+        {
+
+            return objDatosProductos.ObtenerProductos();
+
+        }
+
     }
 }
