@@ -31,7 +31,7 @@ namespace CapaDatos
             }
 
             if (accion == "Borrar")
-                orden = "delete from productos where Codigo = " + objProducto.Codigo + ";";
+                orden = "delete from productos where Codigo =" + objProducto.Codigo + ";";
 
             SqlCommand cmd = new SqlCommand(orden, conexion);
 
@@ -86,7 +86,7 @@ namespace CapaDatos
         public List<Producto> ObtenerProductos()
         {
             List<Producto> lista = new List<Producto>();
-            string orden = "Select Id_prod, Nombre From productos";
+            string orden = "Select Codigo, Nombre From productos";
             SqlCommand cmd = new SqlCommand(orden, conexion);
             SqlDataReader dr;
             try
@@ -96,7 +96,7 @@ namespace CapaDatos
                 while (dr.Read())
                 {
                     Producto O = new Producto();
-                    O.Id_prod = dr.GetInt32(0);
+                    O.Codigo = dr.GetInt32(0);
                     O.Nombre = dr.GetString(1);
                     lista.Add(O);
                 }

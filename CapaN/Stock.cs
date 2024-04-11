@@ -15,6 +15,8 @@ namespace CapaN
         private int cantidad;
         private DateTime admitido;
         private int prod_cod;
+        private bool caducado;
+
 
         #endregion
 
@@ -23,19 +25,21 @@ namespace CapaN
         public Stock()
         { }
 
-        public Stock(int Id_stock, int Cantidad, DateTime Admitido, int Prod_cod)
+        public Stock(int Id_stock, int Cantidad, DateTime Admitido, int Prod_cod, bool Caducado)
         {
             this.id_stock = Id_stock;
             this.cantidad = Cantidad;
             this.admitido = Admitido;
             this.prod_cod = Prod_cod;
+            this.caducado = Caducado;
         }
 
-        public Stock(int Cantidad, DateTime Admitido, int Prod_cod)
+        public Stock(int Cantidad, DateTime Admitido, int Prod_cod, bool Caducado)
         {
             this.cantidad = Cantidad;
             this.admitido = Admitido;
             this.prod_cod = Prod_cod;
+            this.caducado = Caducado;
         }
 
         public Stock(int Prod_cod)
@@ -75,6 +79,13 @@ namespace CapaN
             get { return prod_cod; }
             set { prod_cod = value; }
         }
+
+        public bool Caducado
+        {
+            get { return caducado; }
+            set { caducado = value; }
+        }
+
         #endregion
 
     }

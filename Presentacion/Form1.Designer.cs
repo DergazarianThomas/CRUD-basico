@@ -59,6 +59,7 @@
             this.lblStockCarg = new System.Windows.Forms.Label();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnModfStock = new System.Windows.Forms.Button();
             this.dtpAdmit = new System.Windows.Forms.DateTimePicker();
             this.cbxProd = new System.Windows.Forms.ComboBox();
             this.btnCargarStock = new System.Windows.Forms.Button();
@@ -67,7 +68,7 @@
             this.lblProd = new System.Windows.Forms.Label();
             this.txtCant = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnModfStock = new System.Windows.Forms.Button();
+            this.chbCaducado = new System.Windows.Forms.CheckBox();
             this.tabProdStock.SuspendLayout();
             this.tabPageProd.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -155,7 +156,7 @@
             // lblProdCarg
             // 
             this.lblProdCarg.AutoSize = true;
-            this.lblProdCarg.Location = new System.Drawing.Point(660, 304);
+            this.lblProdCarg.Location = new System.Drawing.Point(562, 305);
             this.lblProdCarg.Name = "lblProdCarg";
             this.lblProdCarg.Size = new System.Drawing.Size(9, 13);
             this.lblProdCarg.TabIndex = 9;
@@ -171,7 +172,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.YellowGreen;
+            this.panel1.BackColor = System.Drawing.Color.Turquoise;
             this.panel1.Controls.Add(this.btnModfProd);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lblPrecio);
@@ -284,6 +285,7 @@
             // 
             // tabPageStock
             // 
+            this.tabPageStock.BackColor = System.Drawing.Color.MistyRose;
             this.tabPageStock.Controls.Add(this.panel4);
             this.tabPageStock.Controls.Add(this.lblStockCarg);
             this.tabPageStock.Controls.Add(this.dgvStock);
@@ -294,7 +296,6 @@
             this.tabPageStock.Size = new System.Drawing.Size(793, 423);
             this.tabPageStock.TabIndex = 1;
             this.tabPageStock.Text = "Stock";
-            this.tabPageStock.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -347,7 +348,7 @@
             // lblStockCarg
             // 
             this.lblStockCarg.AutoSize = true;
-            this.lblStockCarg.Location = new System.Drawing.Point(636, 307);
+            this.lblStockCarg.Location = new System.Drawing.Point(580, 309);
             this.lblStockCarg.Name = "lblStockCarg";
             this.lblStockCarg.Size = new System.Drawing.Size(9, 13);
             this.lblStockCarg.TabIndex = 10;
@@ -363,7 +364,8 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.YellowGreen;
+            this.panel2.BackColor = System.Drawing.Color.Turquoise;
+            this.panel2.Controls.Add(this.chbCaducado);
             this.panel2.Controls.Add(this.btnModfStock);
             this.panel2.Controls.Add(this.dtpAdmit);
             this.panel2.Controls.Add(this.cbxProd);
@@ -377,11 +379,23 @@
             this.panel2.Size = new System.Drawing.Size(196, 272);
             this.panel2.TabIndex = 7;
             // 
+            // btnModfStock
+            // 
+            this.btnModfStock.Location = new System.Drawing.Point(109, 204);
+            this.btnModfStock.Name = "btnModfStock";
+            this.btnModfStock.Size = new System.Drawing.Size(75, 23);
+            this.btnModfStock.TabIndex = 12;
+            this.btnModfStock.Text = "Modificar";
+            this.btnModfStock.UseVisualStyleBackColor = true;
+            this.btnModfStock.Click += new System.EventHandler(this.btnModfStock_Click);
+            // 
             // dtpAdmit
             // 
+            this.dtpAdmit.CustomFormat = "";
+            this.dtpAdmit.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpAdmit.Location = new System.Drawing.Point(63, 115);
             this.dtpAdmit.Name = "dtpAdmit";
-            this.dtpAdmit.Size = new System.Drawing.Size(121, 20);
+            this.dtpAdmit.Size = new System.Drawing.Size(100, 20);
             this.dtpAdmit.TabIndex = 11;
             // 
             // cbxProd
@@ -440,15 +454,15 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // btnModfStock
+            // chbCaducado
             // 
-            this.btnModfStock.Location = new System.Drawing.Point(109, 204);
-            this.btnModfStock.Name = "btnModfStock";
-            this.btnModfStock.Size = new System.Drawing.Size(75, 23);
-            this.btnModfStock.TabIndex = 12;
-            this.btnModfStock.Text = "Modificar";
-            this.btnModfStock.UseVisualStyleBackColor = true;
-            this.btnModfStock.Click += new System.EventHandler(this.btnModfStock_Click);
+            this.chbCaducado.AutoSize = true;
+            this.chbCaducado.Location = new System.Drawing.Point(63, 153);
+            this.chbCaducado.Name = "chbCaducado";
+            this.chbCaducado.Size = new System.Drawing.Size(75, 17);
+            this.chbCaducado.TabIndex = 13;
+            this.chbCaducado.Text = "Caducado";
+            this.chbCaducado.UseVisualStyleBackColor = true;
             // 
             // formTienda
             // 
@@ -519,6 +533,7 @@
         private System.Windows.Forms.TextBox txtBorrStock;
         private System.Windows.Forms.Button btnModfProd;
         private System.Windows.Forms.Button btnModfStock;
+        private System.Windows.Forms.CheckBox chbCaducado;
     }
 }
 

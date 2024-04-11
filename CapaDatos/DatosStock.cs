@@ -8,11 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using CapaDatos;
 using CapaN;
+using System.Collections;
+using System.Reflection;
 
 namespace CapaDatos
 {
     public class DatosStock : DatosConexionBD
     {
+        public int convertToBit(bool caducado)
+        {
+            if ( caducado == true)
+            {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+
 
         public int abmStock(string accion, Stock objStock)
         {
@@ -21,12 +34,12 @@ namespace CapaDatos
 
             if (accion == "Alta")
             {
-                orden = $"insert into stock (Cantidad, Admitido, Prod_cod) values ({objStock.Cantidad}, '{objStock.Admitido}', {objStock.Prod_cod});";
+                orden = $"insert into stock (Cantidad, Admitido, Prod_cod, Caducado) values ({objStock.Cantidad}, '{objStock.Admitido}', {objStock.Prod_cod}, {convertToBit(objStock.Caducado)} );";
             }
 
             if (accion == "Modificar")
             {
-                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= '{objStock.Admitido}' WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
+                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= '{objStock.Admitido}', Caducado= {convertToBit(objStock.Caducado)} WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
             }
 
             if (accion == "Borrar")
@@ -60,7 +73,8 @@ namespace CapaDatos
             if (cual != "Todos")
                 orden = "select * from stock where Id_stock = " + int.Parse(cual) + ";";
             else
-                orden = "select * from stock;";
+                orden = "select p.Nombre, s.Cantidad, s.Admitido, s.Caducado from stock s inner join productos p on s.Prod_cod = p.Codigo;";
+
             SqlCommand cmd = new SqlCommand(orden, conexion);
             DataSet ds = new DataSet();
             SqlDataAdapter da = new SqlDataAdapter();

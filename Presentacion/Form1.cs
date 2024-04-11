@@ -57,6 +57,14 @@ namespace Presentacion
                 lblProdCarg.Text = "No existen productos cargados en el sistema";
         }
 
+        private void LlenarTxts(DataSet ds)
+        {
+            txtCod.Text = ds.Tables[0].Rows[0]["Codigo"].ToString();
+            txtCod.Text = ds.Tables[0].Rows[0]["Nombre"].ToString();
+            txtCod.Text = ds.Tables[0].Rows[0]["Unidad"].ToString();
+            txtCod.Text = ds.Tables[0].Rows[0]["Precio"].ToString();
+        }
+
         private void LlenarDgvStock()
         {
             lblStockCarg.Text = "";
@@ -67,7 +75,7 @@ namespace Presentacion
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    dgvStock.Rows.Add(dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
+                    dgvStock.Rows.Add(dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
                 }
             }
             else
@@ -84,6 +92,7 @@ namespace Presentacion
             dgvStock.Columns.Add("0", "Producto");
             dgvStock.Columns.Add("1", "Cantidad");
             dgvStock.Columns.Add("2", "Admitido");
+            dgvStock.Columns.Add("3", "Caducado");
 
         }
 
@@ -92,7 +101,7 @@ namespace Presentacion
         void LlenarCbxProd()
         {
             cbxProd.SelectedIndex = -1;
-            cbxProd.ValueMember = "Id_prod";
+            cbxProd.ValueMember = "Codigo";
             cbxProd.DisplayMember = "Nombre";
             cbxProd.DataSource = objNegProd.ObtenerProductos();
 
@@ -169,7 +178,7 @@ namespace Presentacion
                 {
                     int nGrabados = -1;
 
-                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue));
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked );
 
                     nGrabados = objNegStock.abmStock("Alta", NuevoStock);
 
@@ -397,7 +406,7 @@ namespace Presentacion
                 {
                     int nResultado = -1;
 
-                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue));
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked);
 
                     nResultado = objNegStock.abmStock("Modificar", NuevoStock); //invoco a la capa de negocio
 
@@ -413,5 +422,16 @@ namespace Presentacion
                 }
             }
         }
+
+        //private void dgvProd_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    DataSet ds = new DataSet();
+
+        //    objNegProd. = Convert.ToInt32(dgvProfesionales.CurrentRow.Cells[0].Value);
+
+        //    ds = objNegProf.listadoProfesionales(objEntProf.CodProf.ToString());
+
+        //    LlenarTxts(ds);
+        //}
     }
 }
