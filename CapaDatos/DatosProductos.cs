@@ -31,8 +31,7 @@ namespace CapaDatos
             }
 
             if (accion == "Borrar")
-                orden = "delete * from productos where Codigo =" + objProducto.Codigo + ";";
-            // falta la orden de borrar 
+                orden = "delete from productos where Codigo = " + objProducto.Codigo + ";";
 
             SqlCommand cmd = new SqlCommand(orden, conexion);
 

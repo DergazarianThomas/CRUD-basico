@@ -24,8 +24,8 @@ namespace Entidades
         public Producto()
         { }
 
-        public Producto(int Id_prod, int Codigo, string Nombre, string Unidad, int Precio) 
-        { 
+        public Producto(int Id_prod, int Codigo, string Nombre, string Unidad, int Precio)
+        {
             this.id_prod = Id_prod;
             this.codigo = Codigo;
             this.nombre = Nombre;
@@ -40,6 +40,12 @@ namespace Entidades
             this.unidad = Unidad;
             this.precio = Precio;
         }
+
+        public Producto(int Codigo)
+        {
+            this.codigo = Codigo;
+        }
+
         #endregion
 
         #region Metodos

@@ -129,6 +129,34 @@ namespace Presentacion
             LlenarCbxProd();
         }
 
+        private void btnBorrarProd_Click(object sender, EventArgs e)
+        {
+            if (!validBorrarProd())
+            {
+                if (ValidCodigoUnico(int.Parse(txtCodBorr.Text)))
+                {
+                    errorProvider1.SetError(txtCodBorr, "El producto no existe");
+                }
+                else
+                {
+                    DialogResult resultado = MessageBox.Show("¿Está seguro que desea eliminar el producto de codigo " + txtCodBorr.Text + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resultado == DialogResult.Yes)
+                    {
+                        int nGrabados = -1;
+                        NuevoProd = new Producto(int.Parse(txtCodBorr.Text));
+                        nGrabados = objNegProd.abmProductos("Borrar", NuevoProd);
+                        LlenarDgvProd();
+                        txtCodBorr.Text = "";
+
+                    }
+
+                    LlenarCbxProd();
+                    errorProvider1.Clear();
+                    LimpiarPantalla();
+                }
+            }
+        }
+
         private void btnStock_Click(object sender, EventArgs e)
         {
 
@@ -184,7 +212,7 @@ namespace Presentacion
         {
             foreach (DataGridViewRow row in dgvProd.Rows)
             {
-                if (row.Cells[1].Value != null && row.Cells[1].Value.ToString() == codigo.ToString())
+                if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == codigo.ToString())
                 {
                     return false;
 
@@ -193,6 +221,24 @@ namespace Presentacion
 
             }
             return true;
+        }
+
+        private bool validBorrarProd()
+        {
+            bool error = false;
+
+            if (String.IsNullOrEmpty(txtCodBorr.Text))
+            {
+                errorProvider1.SetError(txtCodBorr, "Debe llenar el campo");
+                error = true;
+            }
+
+            if (Regex.IsMatch(txtCodBorr.Text, "[^0-9]"))
+            {
+                errorProvider1.SetError(txtCodBorr, "Deben ser solo numeros");
+                error = true;
+            }
+            return error;
         }
 
         #endregion
@@ -204,6 +250,36 @@ namespace Presentacion
             txtUnid.Text = "";
             txtPrecio.Text = "";
             txtCant.Text = "";
+        }
+
+        private void btnModfProd_Click(object sender, EventArgs e)
+        {
+            if (!ValidarProductos())
+            {
+                if (ValidCodigoUnico(int.Parse(txtCod.Text)))
+                {
+                    errorProvider1.SetError(txtCod, "Codigo inexistente");
+                }
+                else
+                {
+                    int nResultado = -1;
+
+                    NuevoProd = new Producto(int.Parse(txtCod.Text), txtNomb.Text, txtUnid.Text, int.Parse(txtPrecio.Text));
+
+                    nResultado = objNegProd.abmProductos("Modificar", NuevoProd); //invoco a la capa de negocio
+
+                    if (nResultado != 0 || nResultado != -1)
+                    {
+                        MessageBox.Show("El producto fue modificado con éxito", "Aviso");
+
+                        LimpiarPantalla();
+                        LlenarDgvProd();
+                        LlenarCbxProd();
+                    }
+                    else
+                        MessageBox.Show("Se produjo un error al intentar modificar la obra", "Error");
+                }
+            }
         }
     }
 }
