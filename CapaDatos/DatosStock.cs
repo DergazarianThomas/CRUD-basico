@@ -26,11 +26,11 @@ namespace CapaDatos
 
             if (accion == "Modificar")
             {
-                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= {objStock.Admitido} WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
+                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= '{objStock.Admitido}' WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
             }
 
             if (accion == "Borrar")
-                orden = "delete * from stock where Prod_cod =" + objStock.Prod_cod + ";";
+                orden = "delete from stock where Prod_cod = " + objStock.Prod_cod + ";";
             // falta la orden de borrar 
 
             SqlCommand cmd = new SqlCommand(orden, conexion);

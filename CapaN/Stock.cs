@@ -37,6 +37,11 @@ namespace CapaN
             this.admitido = Admitido;
             this.prod_cod = Prod_cod;
         }
+
+        public Stock(int Prod_cod)
+        {
+            this.prod_cod= Prod_cod;
+        }
         #endregion
 
         #region Metodos

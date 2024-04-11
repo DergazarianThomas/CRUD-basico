@@ -39,6 +39,7 @@
             this.lblProdCarg = new System.Windows.Forms.Label();
             this.dgvProd = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnModfProd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblPrecio = new System.Windows.Forms.Label();
             this.btnCargarProd = new System.Windows.Forms.Button();
@@ -52,13 +53,13 @@
             this.tabPageStock = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBorrarStock = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtBorrStock = new System.Windows.Forms.TextBox();
             this.lblStockCarg = new System.Windows.Forms.Label();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dtpAdmit = new System.Windows.Forms.DateTimePicker();
             this.cbxProd = new System.Windows.Forms.ComboBox();
             this.btnCargarStock = new System.Windows.Forms.Button();
             this.lblAdm = new System.Windows.Forms.Label();
@@ -66,7 +67,7 @@
             this.lblProd = new System.Windows.Forms.Label();
             this.txtCant = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnModfProd = new System.Windows.Forms.Button();
+            this.btnModfStock = new System.Windows.Forms.Button();
             this.tabProdStock.SuspendLayout();
             this.tabPageProd.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -187,6 +188,16 @@
             this.panel1.Size = new System.Drawing.Size(196, 272);
             this.panel1.TabIndex = 6;
             // 
+            // btnModfProd
+            // 
+            this.btnModfProd.Location = new System.Drawing.Point(106, 226);
+            this.btnModfProd.Name = "btnModfProd";
+            this.btnModfProd.Size = new System.Drawing.Size(75, 23);
+            this.btnModfProd.TabIndex = 12;
+            this.btnModfProd.Text = "Modificar";
+            this.btnModfProd.UseVisualStyleBackColor = true;
+            this.btnModfProd.Click += new System.EventHandler(this.btnModfProd_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -289,9 +300,9 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.RosyBrown;
             this.panel4.Controls.Add(this.label3);
-            this.panel4.Controls.Add(this.button1);
+            this.panel4.Controls.Add(this.btnBorrarStock);
             this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.textBox1);
+            this.panel4.Controls.Add(this.txtBorrStock);
             this.panel4.Location = new System.Drawing.Point(237, 98);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(117, 128);
@@ -307,14 +318,15 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "BORRAR";
             // 
-            // button1
+            // btnBorrarStock
             // 
-            this.button1.Location = new System.Drawing.Point(26, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(64, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Borrar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnBorrarStock.Location = new System.Drawing.Point(26, 89);
+            this.btnBorrarStock.Name = "btnBorrarStock";
+            this.btnBorrarStock.Size = new System.Drawing.Size(64, 23);
+            this.btnBorrarStock.TabIndex = 9;
+            this.btnBorrarStock.Text = "Borrar";
+            this.btnBorrarStock.UseVisualStyleBackColor = true;
+            this.btnBorrarStock.Click += new System.EventHandler(this.btnBorrarStock_Click);
             // 
             // label4
             // 
@@ -325,12 +337,12 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "Codigo";
             // 
-            // textBox1
+            // txtBorrStock
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 63);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(88, 20);
-            this.textBox1.TabIndex = 9;
+            this.txtBorrStock.Location = new System.Drawing.Point(13, 63);
+            this.txtBorrStock.Name = "txtBorrStock";
+            this.txtBorrStock.Size = new System.Drawing.Size(88, 20);
+            this.txtBorrStock.TabIndex = 9;
             // 
             // lblStockCarg
             // 
@@ -352,7 +364,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.YellowGreen;
-            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.btnModfStock);
+            this.panel2.Controls.Add(this.dtpAdmit);
             this.panel2.Controls.Add(this.cbxProd);
             this.panel2.Controls.Add(this.btnCargarStock);
             this.panel2.Controls.Add(this.lblAdm);
@@ -364,12 +377,12 @@
             this.panel2.Size = new System.Drawing.Size(196, 272);
             this.panel2.TabIndex = 7;
             // 
-            // dateTimePicker1
+            // dtpAdmit
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(63, 115);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(121, 20);
-            this.dateTimePicker1.TabIndex = 11;
+            this.dtpAdmit.Location = new System.Drawing.Point(63, 115);
+            this.dtpAdmit.Name = "dtpAdmit";
+            this.dtpAdmit.Size = new System.Drawing.Size(121, 20);
+            this.dtpAdmit.TabIndex = 11;
             // 
             // cbxProd
             // 
@@ -381,7 +394,7 @@
             // 
             // btnCargarStock
             // 
-            this.btnCargarStock.Location = new System.Drawing.Point(63, 203);
+            this.btnCargarStock.Location = new System.Drawing.Point(13, 204);
             this.btnCargarStock.Name = "btnCargarStock";
             this.btnCargarStock.Size = new System.Drawing.Size(75, 23);
             this.btnCargarStock.TabIndex = 1;
@@ -427,15 +440,15 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // btnModfProd
+            // btnModfStock
             // 
-            this.btnModfProd.Location = new System.Drawing.Point(106, 226);
-            this.btnModfProd.Name = "btnModfProd";
-            this.btnModfProd.Size = new System.Drawing.Size(75, 23);
-            this.btnModfProd.TabIndex = 12;
-            this.btnModfProd.Text = "Modificar";
-            this.btnModfProd.UseVisualStyleBackColor = true;
-            this.btnModfProd.Click += new System.EventHandler(this.btnModfProd_Click);
+            this.btnModfStock.Location = new System.Drawing.Point(109, 204);
+            this.btnModfStock.Name = "btnModfStock";
+            this.btnModfStock.Size = new System.Drawing.Size(75, 23);
+            this.btnModfStock.TabIndex = 12;
+            this.btnModfStock.Text = "Modificar";
+            this.btnModfStock.UseVisualStyleBackColor = true;
+            this.btnModfStock.Click += new System.EventHandler(this.btnModfStock_Click);
             // 
             // formTienda
             // 
@@ -491,7 +504,7 @@
         private System.Windows.Forms.TextBox txtCant;
         private System.Windows.Forms.ComboBox cbxProd;
         private System.Windows.Forms.Label lblStockCarg;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dtpAdmit;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnBorrarProd;
@@ -501,10 +514,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBorrarStock;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtBorrStock;
         private System.Windows.Forms.Button btnModfProd;
+        private System.Windows.Forms.Button btnModfStock;
     }
 }
 

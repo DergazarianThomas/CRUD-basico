@@ -159,7 +159,33 @@ namespace Presentacion
 
         private void btnStock_Click(object sender, EventArgs e)
         {
+            if (!ValidarStock())
+            {
+                if (ValidCodigoUnicoStock(Convert.ToInt32(cbxProd.SelectedValue)) == false)
+                {
+                    errorProvider1.SetError(cbxProd, "El producto ya esta en stock");
+                }
+                else
+                {
+                    int nGrabados = -1;
 
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue));
+
+                    nGrabados = objNegStock.abmStock("Alta", NuevoStock);
+
+                    if (nGrabados == -1)
+                    {
+                        MessageBox.Show("No se pudo cargar el stock al sistema");
+                    }
+                    else
+                    {
+                        MessageBox.Show("El stock se guardo con éxito.");
+                        LlenarDgvStock();
+                        LimpiarPantalla();
+                    }
+                }
+            }
+            LlenarCbxProd();
         }
 
         #region validaciones
@@ -208,6 +234,26 @@ namespace Presentacion
             return error;
         }
 
+        private bool ValidarStock()
+        {
+            errorProvider1.Clear();
+            bool error = false;
+
+            if (String.IsNullOrEmpty(cbxProd.Text))
+            {
+                errorProvider1.SetError(txtCant, "Debe llenar el campo");
+                error = true;
+            }
+
+            if (Regex.IsMatch(txtCant.Text, "[^0-9]"))
+            {
+                errorProvider1.SetError(txtPrecio, "Deben ser solo numeros");
+                error = true;
+            }
+
+            return error;
+        }
+
         private bool ValidCodigoUnico(int codigo)
         {
             foreach (DataGridViewRow row in dgvProd.Rows)
@@ -217,6 +263,19 @@ namespace Presentacion
                     return false;
 
 
+                }
+
+            }
+            return true;
+        }
+
+        private bool ValidCodigoUnicoStock(int codigo)
+        {
+            foreach (DataGridViewRow row in dgvStock.Rows)
+            {
+                if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == codigo.ToString())
+                {
+                    return false;
                 }
 
             }
@@ -236,6 +295,24 @@ namespace Presentacion
             if (Regex.IsMatch(txtCodBorr.Text, "[^0-9]"))
             {
                 errorProvider1.SetError(txtCodBorr, "Deben ser solo numeros");
+                error = true;
+            }
+            return error;
+        }
+
+        private bool validBorrarStock()
+        {
+            bool error = false;
+
+            if (String.IsNullOrEmpty(txtBorrStock.Text))
+            {
+                errorProvider1.SetError(txtBorrStock, "Debe llenar el campo");
+                error = true;
+            }
+
+            if (Regex.IsMatch(txtCodBorr.Text, "[^0-9]"))
+            {
+                errorProvider1.SetError(txtBorrStock, "Deben ser solo numeros");
                 error = true;
             }
             return error;
@@ -277,7 +354,62 @@ namespace Presentacion
                         LlenarCbxProd();
                     }
                     else
-                        MessageBox.Show("Se produjo un error al intentar modificar la obra", "Error");
+                        MessageBox.Show("Se produjo un error al intentar modificar el produccto", "Error");
+                }
+            }
+        }
+
+        private void btnBorrarStock_Click(object sender, EventArgs e)
+        {
+            if (!validBorrarStock())
+            {
+                if (ValidCodigoUnicoStock(int.Parse(txtBorrStock.Text)))
+                {
+                    errorProvider1.SetError(txtBorrStock, "El stock de este producto no existe");
+                }
+                else
+                {
+                    DialogResult resultado = MessageBox.Show("¿Está seguro que desea eliminar el stock del producto " + txtBorrStock.Text + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resultado == DialogResult.Yes)
+                    {
+                        int nGrabados = -1;
+                        NuevoStock = new Stock(int.Parse(txtBorrStock.Text));
+                        nGrabados = objNegStock.abmStock("Borrar", NuevoStock);
+                        LlenarDgvStock();
+                        txtBorrStock.Text = "";
+
+                    }
+                    errorProvider1.Clear();
+                    LimpiarPantalla();
+                }
+            }
+        }
+
+        private void btnModfStock_Click(object sender, EventArgs e)
+        {
+            if (!ValidarStock())
+            {
+                if (ValidCodigoUnicoStock(Convert.ToInt32(cbxProd.SelectedValue)))
+                {
+                    errorProvider1.SetError(cbxProd, "este producto no se encuentra en stock");
+                }
+                else
+                {
+                    int nResultado = -1;
+
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue));
+
+                    nResultado = objNegStock.abmStock("Modificar", NuevoStock); //invoco a la capa de negocio
+
+                    if (nResultado != 0 || nResultado != -1)
+                    {
+                        MessageBox.Show("El stock fue modificado con éxito", "Aviso");
+
+                        LimpiarPantalla();
+                        LlenarDgvStock();
+                    }
+                    else
+                        MessageBox.Show("Se produjo un error al intentar modificar el stock", "Error");
                 }
             }
         }
