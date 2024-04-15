@@ -15,6 +15,7 @@ namespace CapaDatos
     public class DatosProductos : DatosConexionBD
     {
 
+
         public int abmProductos(string accion, Producto objProducto)
         {
             int resultado = -1;

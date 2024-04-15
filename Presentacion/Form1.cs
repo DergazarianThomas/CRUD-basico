@@ -10,6 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
 using System.Windows.Forms;
 
 namespace Presentacion
@@ -25,6 +28,10 @@ namespace Presentacion
 
         public NegStock objNegStock = new NegStock();
         public NegProductos objNegProd = new NegProductos();
+
+        public Producto objEntProd = new Producto();
+        public Stock objEntStock = new Stock();
+
         #endregion
 
         public formTienda()
@@ -57,14 +64,6 @@ namespace Presentacion
                 lblProdCarg.Text = "No existen productos cargados en el sistema";
         }
 
-        private void LlenarTxts(DataSet ds)
-        {
-            txtCod.Text = ds.Tables[0].Rows[0]["Codigo"].ToString();
-            txtCod.Text = ds.Tables[0].Rows[0]["Nombre"].ToString();
-            txtCod.Text = ds.Tables[0].Rows[0]["Unidad"].ToString();
-            txtCod.Text = ds.Tables[0].Rows[0]["Precio"].ToString();
-        }
-
         private void LlenarDgvStock()
         {
             lblStockCarg.Text = "";
@@ -75,7 +74,7 @@ namespace Presentacion
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    dgvStock.Rows.Add(dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
+                    dgvStock.Rows.Add(dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString());
                 }
             }
             else
@@ -89,23 +88,17 @@ namespace Presentacion
             dgvProd.Columns.Add("2", "Unidad");
             dgvProd.Columns.Add("3", "Precio");
 
-            dgvStock.Columns.Add("0", "Producto");
-            dgvStock.Columns.Add("1", "Cantidad");
-            dgvStock.Columns.Add("2", "Admitido");
-            dgvStock.Columns.Add("3", "Caducado");
+            dgvStock.Columns.Add("0", "Codigo");
+            dgvStock.Columns.Add("1", "Producto");
+            dgvStock.Columns.Add("2", "Cantidad");
+            dgvStock.Columns.Add("3", "Admitido");
+            dgvStock.Columns.Add("4", "Caducado");
 
         }
 
         #endregion
 
-        void LlenarCbxProd()
-        {
-            cbxProd.SelectedIndex = -1;
-            cbxProd.ValueMember = "Codigo";
-            cbxProd.DisplayMember = "Nombre";
-            cbxProd.DataSource = objNegProd.ObtenerProductos();
-
-        }
+        #region botones
 
         private void btnCargar_Click(object sender, EventArgs e)
         {
@@ -168,6 +161,7 @@ namespace Presentacion
 
         private void btnStock_Click(object sender, EventArgs e)
         {
+
             if (!ValidarStock())
             {
                 if (ValidCodigoUnicoStock(Convert.ToInt32(cbxProd.SelectedValue)) == false)
@@ -176,9 +170,11 @@ namespace Presentacion
                 }
                 else
                 {
+                    string fechaFormateada = dtpAdmit.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
                     int nGrabados = -1;
 
-                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked );
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), DateTime.Parse(fechaFormateada), Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked );
 
                     nGrabados = objNegStock.abmStock("Alta", NuevoStock);
 
@@ -196,6 +192,92 @@ namespace Presentacion
             }
             LlenarCbxProd();
         }
+
+        private void btnModfProd_Click(object sender, EventArgs e)
+        {
+            if (!ValidarProductos())
+            {
+                if (ValidCodigoUnico(int.Parse(txtCod.Text)))
+                {
+                    errorProvider1.SetError(txtCod, "Codigo inexistente");
+                }
+                else
+                {
+                    int nResultado = -1;
+
+                    NuevoProd = new Producto(int.Parse(txtCod.Text), txtNomb.Text, txtUnid.Text, int.Parse(txtPrecio.Text));
+
+                    nResultado = objNegProd.abmProductos("Modificar", NuevoProd); //invoco a la capa de negocio
+
+                    if (nResultado != 0 || nResultado != -1)
+                    {
+                        MessageBox.Show("El producto fue modificado con éxito", "Aviso");
+
+                        LimpiarPantalla();
+                        LlenarDgvProd();
+                        LlenarCbxProd();
+                    }
+                    else
+                        MessageBox.Show("Se produjo un error al intentar modificar el produccto", "Error");
+                }
+            }
+        }
+
+        private void btnBorrarStock_Click(object sender, EventArgs e)
+        {
+            if (!validBorrarStock())
+            {
+                if (ValidCodigoUnicoStock(int.Parse(txtBorrStock.Text)))
+                {
+                    errorProvider1.SetError(txtBorrStock, "El stock de este producto no existe");
+                }
+                else
+                {
+                    DialogResult resultado = MessageBox.Show("¿Está seguro que desea eliminar el stock del producto " + txtBorrStock.Text + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resultado == DialogResult.Yes)
+                    {
+                        int nGrabados = -1;
+                        NuevoStock = new Stock(int.Parse(txtBorrStock.Text));
+                        nGrabados = objNegStock.abmStock("Borrar", NuevoStock);
+                        LlenarDgvStock();
+                        txtBorrStock.Text = "";
+
+                    }
+                    errorProvider1.Clear();
+                    LimpiarPantalla();
+                }
+            }
+        }
+
+        private void btnModfStock_Click(object sender, EventArgs e)
+        {
+            if (!ValidarStock())
+            {
+                if (ValidCodigoUnicoStock(Convert.ToInt32(cbxProd.SelectedValue)))
+                {
+                    errorProvider1.SetError(cbxProd, "este producto no se encuentra en stock");
+                }
+                else
+                {
+                    int nResultado = -1;
+
+                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked);
+
+                    nResultado = objNegStock.abmStock("Modificar", NuevoStock); //invoco a la capa de negocio
+
+                    if (nResultado != 0 || nResultado != -1)
+                    {
+                        MessageBox.Show("El stock fue modificado con éxito", "Aviso");
+
+                        LimpiarPantalla();
+                        LlenarDgvStock();
+                    }
+                    else
+                        MessageBox.Show("Se produjo un error al intentar modificar el stock", "Error");
+                }
+            }
+        }
+        #endregion
 
         #region validaciones
 
@@ -249,6 +331,12 @@ namespace Presentacion
             bool error = false;
 
             if (String.IsNullOrEmpty(cbxProd.Text))
+            {
+                errorProvider1.SetError(txtCant, "Debe llenar el campo");
+                error = true;
+            }
+
+            if (String.IsNullOrEmpty(txtCant.Text))
             {
                 errorProvider1.SetError(txtCant, "Debe llenar el campo");
                 error = true;
@@ -338,100 +426,89 @@ namespace Presentacion
             txtCant.Text = "";
         }
 
-        private void btnModfProd_Click(object sender, EventArgs e)
+        void LlenarCbxProd()
         {
-            if (!ValidarProductos())
+            cbxProd.SelectedIndex = -1;
+            cbxProd.ValueMember = "Codigo";
+            cbxProd.DisplayMember = "Nombre";
+            cbxProd.DataSource = objNegProd.ObtenerProductos();
+
+        }
+
+        private void dgvProd_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataSet ds = new DataSet();
+
+            objEntProd.Codigo = Convert.ToInt32(dgvProd.CurrentRow.Cells[0].Value);
+
+            ds = objNegProd.listadoProductos(objEntProd.Codigo.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                if (ValidCodigoUnico(int.Parse(txtCod.Text)))
-                {
-                    errorProvider1.SetError(txtCod, "Codigo inexistente");
-                }
-                else
-                {
-                    int nResultado = -1;
-
-                    NuevoProd = new Producto(int.Parse(txtCod.Text), txtNomb.Text, txtUnid.Text, int.Parse(txtPrecio.Text));
-
-                    nResultado = objNegProd.abmProductos("Modificar", NuevoProd); //invoco a la capa de negocio
-
-                    if (nResultado != 0 || nResultado != -1)
-                    {
-                        MessageBox.Show("El producto fue modificado con éxito", "Aviso");
-
-                        LimpiarPantalla();
-                        LlenarDgvProd();
-                        LlenarCbxProd();
-                    }
-                    else
-                        MessageBox.Show("Se produjo un error al intentar modificar el produccto", "Error");
-                }
+                LlenarTxtsProd(ds);
+                btnCargarProd.Visible = false;
             }
         }
 
-        private void btnBorrarStock_Click(object sender, EventArgs e)
+        private void LlenarTxtsProd(DataSet ds)
         {
-            if (!validBorrarStock())
-            {
-                if (ValidCodigoUnicoStock(int.Parse(txtBorrStock.Text)))
-                {
-                    errorProvider1.SetError(txtBorrStock, "El stock de este producto no existe");
-                }
-                else
-                {
-                    DialogResult resultado = MessageBox.Show("¿Está seguro que desea eliminar el stock del producto " + txtBorrStock.Text + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (resultado == DialogResult.Yes)
-                    {
-                        int nGrabados = -1;
-                        NuevoStock = new Stock(int.Parse(txtBorrStock.Text));
-                        nGrabados = objNegStock.abmStock("Borrar", NuevoStock);
-                        LlenarDgvStock();
-                        txtBorrStock.Text = "";
+            txtCod.Text = ds.Tables[0].Rows[0]["Codigo"].ToString();
+            txtNomb.Text = ds.Tables[0].Rows[0]["Nombre"].ToString();
+            txtUnid.Text = ds.Tables[0].Rows[0]["Unidad"].ToString();
+            txtPrecio.Text = ds.Tables[0].Rows[0]["Precio"].ToString();
+        }
 
-                    }
-                    errorProvider1.Clear();
-                    LimpiarPantalla();
+        private void CrearPdf(DataGridView dataGridView, string filePath)
+        {
+            try
+            {
+                PdfWriter writer = new PdfWriter(filePath);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                iText.Layout.Element.Table table = new iText.Layout.Element.Table(dataGridView.Columns.Count);
+
+                foreach (DataGridViewColumn column in dataGridView.Columns)
+                {
+                    Cell headerCell = new Cell().Add(new Paragraph(column.HeaderText));
+                    table.AddHeaderCell(headerCell);
                 }
+
+                foreach (DataGridViewRow row in dataGridView.Rows)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if (cell.Value != null)
+                        {
+                            table.AddCell(new Cell().Add(new Paragraph(cell.Value.ToString())));
+                        }
+                        else
+                        {
+                            table.AddCell(new Cell());
+                        }
+                    }
+                }
+
+                document.Add(table);
+
+                document.Close();
+
+                MessageBox.Show("Reporte generado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar el pdf: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnModfStock_Click(object sender, EventArgs e)
+        private void btnRepProd_Click(object sender, EventArgs e)
         {
-            if (!ValidarStock())
-            {
-                if (ValidCodigoUnicoStock(Convert.ToInt32(cbxProd.SelectedValue)))
-                {
-                    errorProvider1.SetError(cbxProd, "este producto no se encuentra en stock");
-                }
-                else
-                {
-                    int nResultado = -1;
-
-                    NuevoStock = new Stock(int.Parse(txtCant.Text), dtpAdmit.Value, Convert.ToInt32(cbxProd.SelectedValue), chbCaducado.Checked);
-
-                    nResultado = objNegStock.abmStock("Modificar", NuevoStock); //invoco a la capa de negocio
-
-                    if (nResultado != 0 || nResultado != -1)
-                    {
-                        MessageBox.Show("El stock fue modificado con éxito", "Aviso");
-
-                        LimpiarPantalla();
-                        LlenarDgvStock();
-                    }
-                    else
-                        MessageBox.Show("Se produjo un error al intentar modificar el stock", "Error");
-                }
-            }
+            CrearPdf(dgvProd, @"E:\k\Reportes\" + "ReporteProd_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
         }
 
-        //private void dgvProd_CellClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    DataSet ds = new DataSet();
-
-        //    objNegProd. = Convert.ToInt32(dgvProfesionales.CurrentRow.Cells[0].Value);
-
-        //    ds = objNegProf.listadoProfesionales(objEntProf.CodProf.ToString());
-
-        //    LlenarTxts(ds);
-        //}
+        private void btnRepStock_Click(object sender, EventArgs e)
+        {
+            CrearPdf(dgvStock, @"E:\k\Reportes\" + "Reporte_Stock" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
+        }
     }
 }

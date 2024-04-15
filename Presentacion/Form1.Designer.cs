@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tabProdStock = new System.Windows.Forms.TabControl();
             this.tabPageProd = new System.Windows.Forms.TabPage();
+            this.btnRepProd = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.btnBorrarProd = new System.Windows.Forms.Button();
@@ -59,6 +60,7 @@
             this.lblStockCarg = new System.Windows.Forms.Label();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.chbCaducado = new System.Windows.Forms.CheckBox();
             this.btnModfStock = new System.Windows.Forms.Button();
             this.dtpAdmit = new System.Windows.Forms.DateTimePicker();
             this.cbxProd = new System.Windows.Forms.ComboBox();
@@ -68,7 +70,7 @@
             this.lblProd = new System.Windows.Forms.Label();
             this.txtCant = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.chbCaducado = new System.Windows.Forms.CheckBox();
+            this.btnRepStock = new System.Windows.Forms.Button();
             this.tabProdStock.SuspendLayout();
             this.tabPageProd.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -94,6 +96,7 @@
             // tabPageProd
             // 
             this.tabPageProd.BackColor = System.Drawing.Color.MistyRose;
+            this.tabPageProd.Controls.Add(this.btnRepProd);
             this.tabPageProd.Controls.Add(this.panel3);
             this.tabPageProd.Controls.Add(this.lblProdCarg);
             this.tabPageProd.Controls.Add(this.dgvProd);
@@ -104,6 +107,16 @@
             this.tabPageProd.Size = new System.Drawing.Size(793, 423);
             this.tabPageProd.TabIndex = 0;
             this.tabPageProd.Text = "Productos";
+            // 
+            // btnRepProd
+            // 
+            this.btnRepProd.Location = new System.Drawing.Point(416, 305);
+            this.btnRepProd.Name = "btnRepProd";
+            this.btnRepProd.Size = new System.Drawing.Size(75, 23);
+            this.btnRepProd.TabIndex = 13;
+            this.btnRepProd.Text = "Reporte";
+            this.btnRepProd.UseVisualStyleBackColor = true;
+            this.btnRepProd.Click += new System.EventHandler(this.btnRepProd_Click);
             // 
             // panel3
             // 
@@ -169,6 +182,7 @@
             this.dgvProd.Name = "dgvProd";
             this.dgvProd.Size = new System.Drawing.Size(401, 272);
             this.dgvProd.TabIndex = 7;
+            this.dgvProd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProd_CellClick);
             // 
             // panel1
             // 
@@ -286,6 +300,7 @@
             // tabPageStock
             // 
             this.tabPageStock.BackColor = System.Drawing.Color.MistyRose;
+            this.tabPageStock.Controls.Add(this.btnRepStock);
             this.tabPageStock.Controls.Add(this.panel4);
             this.tabPageStock.Controls.Add(this.lblStockCarg);
             this.tabPageStock.Controls.Add(this.dgvStock);
@@ -379,6 +394,16 @@
             this.panel2.Size = new System.Drawing.Size(196, 272);
             this.panel2.TabIndex = 7;
             // 
+            // chbCaducado
+            // 
+            this.chbCaducado.AutoSize = true;
+            this.chbCaducado.Location = new System.Drawing.Point(63, 153);
+            this.chbCaducado.Name = "chbCaducado";
+            this.chbCaducado.Size = new System.Drawing.Size(75, 17);
+            this.chbCaducado.TabIndex = 13;
+            this.chbCaducado.Text = "Caducado";
+            this.chbCaducado.UseVisualStyleBackColor = true;
+            // 
             // btnModfStock
             // 
             this.btnModfStock.Location = new System.Drawing.Point(109, 204);
@@ -392,7 +417,6 @@
             // dtpAdmit
             // 
             this.dtpAdmit.CustomFormat = "";
-            this.dtpAdmit.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpAdmit.Location = new System.Drawing.Point(63, 115);
             this.dtpAdmit.Name = "dtpAdmit";
             this.dtpAdmit.Size = new System.Drawing.Size(100, 20);
@@ -454,15 +478,15 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // chbCaducado
+            // btnRepStock
             // 
-            this.chbCaducado.AutoSize = true;
-            this.chbCaducado.Location = new System.Drawing.Point(63, 153);
-            this.chbCaducado.Name = "chbCaducado";
-            this.chbCaducado.Size = new System.Drawing.Size(75, 17);
-            this.chbCaducado.TabIndex = 13;
-            this.chbCaducado.Text = "Caducado";
-            this.chbCaducado.UseVisualStyleBackColor = true;
+            this.btnRepStock.Location = new System.Drawing.Point(418, 309);
+            this.btnRepStock.Name = "btnRepStock";
+            this.btnRepStock.Size = new System.Drawing.Size(75, 23);
+            this.btnRepStock.TabIndex = 14;
+            this.btnRepStock.Text = "Reporte";
+            this.btnRepStock.UseVisualStyleBackColor = true;
+            this.btnRepStock.Click += new System.EventHandler(this.btnRepStock_Click);
             // 
             // formTienda
             // 
@@ -534,6 +558,8 @@
         private System.Windows.Forms.Button btnModfProd;
         private System.Windows.Forms.Button btnModfStock;
         private System.Windows.Forms.CheckBox chbCaducado;
+        private System.Windows.Forms.Button btnRepProd;
+        private System.Windows.Forms.Button btnRepStock;
     }
 }
 

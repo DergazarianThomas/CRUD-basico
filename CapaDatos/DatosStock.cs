@@ -26,6 +26,13 @@ namespace CapaDatos
             }
         }
 
+        public string convertToDate(DateTime adm)
+        {
+            string fechaFormateada = adm.ToString("yyyy-MM-dd HH:mm:ss");
+
+            return fechaFormateada;
+        }
+
 
         public int abmStock(string accion, Stock objStock)
         {
@@ -34,12 +41,12 @@ namespace CapaDatos
 
             if (accion == "Alta")
             {
-                orden = $"insert into stock (Cantidad, Admitido, Prod_cod, Caducado) values ({objStock.Cantidad}, '{objStock.Admitido}', {objStock.Prod_cod}, {convertToBit(objStock.Caducado)} );";
+                orden = $"insert into stock (Cantidad, Admitido, Prod_cod, Caducado) values ({objStock.Cantidad}, '{convertToDate(objStock.Admitido)}', {objStock.Prod_cod}, {convertToBit(objStock.Caducado)} );";
             }
 
             if (accion == "Modificar")
             {
-                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= '{objStock.Admitido}', Caducado= {convertToBit(objStock.Caducado)} WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
+                orden = $"update stock set Cantidad= {objStock.Cantidad}, Admitido= '{convertToDate(objStock.Admitido)}', Caducado= {convertToBit(objStock.Caducado)} WHERE Prod_cod Like '%{objStock.Prod_cod}%';";
             }
 
             if (accion == "Borrar")
@@ -73,7 +80,7 @@ namespace CapaDatos
             if (cual != "Todos")
                 orden = "select * from stock where Id_stock = " + int.Parse(cual) + ";";
             else
-                orden = "select p.Nombre, s.Cantidad, s.Admitido, s.Caducado from stock s inner join productos p on s.Prod_cod = p.Codigo;";
+                orden = "select s.Prod_cod, p.Nombre, s.Cantidad, s.Admitido, s.Caducado from stock s inner join productos p on s.Prod_cod = p.Codigo;";
 
             SqlCommand cmd = new SqlCommand(orden, conexion);
             DataSet ds = new DataSet();
